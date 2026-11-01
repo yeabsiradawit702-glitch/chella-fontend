@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
   BarChart,
   Bar,
@@ -10,9 +10,25 @@ import {
   Cell,
 } from 'recharts';
 
-const CustomBarChart = ({ data = [] }) => {
-  const getBarColor = (entry) => {
-    switch (entry?.priority) {
+interface BarChartItem {
+  priority: string;
+  count: number;
+}
+
+interface CustomBarChartProps {
+  data?: BarChartItem[];
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    payload?: BarChartItem;
+  }>;
+}
+
+const CustomBarChart = ({ data = [] }: CustomBarChartProps) => {
+  const getBarColor = (entry: BarChartItem): string => {
+    switch (entry.priority) {
       case 'low':
         return '#00BC7D';
       case 'medium':
@@ -24,18 +40,20 @@ const CustomBarChart = ({ data = [] }) => {
     }
   };
 
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
+  const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
+    const item = payload?.[0]?.payload;
+
+    if (active && item) {
       return (
         <div className="bg-white shadow-md rounded-lg p-2 border border-gray-300">
           <p className="text-xs font-semibold text-purple-600 mb-1">
-            {payload[0].payload.priority}
+            {item.priority}
           </p>
 
           <p className="text-sm text-gray-600">
             Count:{' '}
             <span className="font-medium text-gray-900">
-              {payload[0].payload.count}
+              {item.count}
             </span>
           </p>
         </div>
@@ -52,10 +70,7 @@ const CustomBarChart = ({ data = [] }) => {
           data={data}
           margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
         >
-          <CartesianGrid
-            strokeDasharray="3 3"
-            vertical={false}
-          />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
 
           <XAxis
             dataKey="priority"
@@ -71,7 +86,7 @@ const CustomBarChart = ({ data = [] }) => {
           />
 
           <Tooltip
-            content={CustomTooltip }
+            content={<CustomTooltip />}
             cursor={{ fill: 'transparent' }}
           />
 

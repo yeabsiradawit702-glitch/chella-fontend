@@ -1,5 +1,5 @@
 import { FaTelegram } from "react-icons/fa6";
-import { LuLayoutDashboard,LuUsers,LuClipboardCheck,LuSquarePlus,LuLogOut, LuUser } from "react-icons/lu";
+import { LuLayoutDashboard,LuUsers,LuClipboardCheck,LuSquarePlus,LuLogOut, LuUser, LuArrowLeftRight } from "react-icons/lu";
 export const SIDE_MENU_DATA =[
     {id:"01",
      lable:"Dashboard",
@@ -58,6 +58,12 @@ export const SIDE_MENU_USER_DATA=[
      icon:LuUser,
      path:"/user/profile" 
     },
+     {
+  id: "07",
+  lable: "Exchange Currency",
+  icon: LuArrowLeftRight,
+  path: "/user/exchange",
+},
       {id:"07",
      lable:"Logout",
      icon:LuLogOut,

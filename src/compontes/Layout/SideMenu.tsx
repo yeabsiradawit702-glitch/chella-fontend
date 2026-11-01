@@ -1,79 +1,37 @@
-/* import React, { useContext, useEffect,useState } from 'react'
-import { UserContext } from '../../../context/UserContext'
-import { useNavigate } from 'react-router-dom';
-import { SIDE_MENU_DATA, SIDE_MENU_USER_DATA } from '../../../utils/data';
 
-const SideMenu = ({activeMenu}) => {
-    const {user,clearUser}=useContext(UserContext);
-    const [sideMenuData,setSideMenuData] = useState([]);
-    const navigate = useNavigate();
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
+import {
+  SIDE_MENU_DATA,
+  SIDE_MENU_USER_DATA,
+} from "../../utilit/data";
 
-    const handleClick = (route)=>{
-        if(route==="logout"){
-            handleLogout();
-            return ;
-        }
-        navigate(route);
+interface SideMenuProps {
+  activeMenu: string;
+}
 
-    };
-    const handleLogout=()=>{
-        localStorage.clear();
-        clearUser();
-        navigate('/login');
+interface MenuItem {
+  path: string;
+  lable: string;
+  icon: React.ElementType;
+}
 
-    };
-    useEffect(()=>{
-        if(user){
-            setSideMenuData(user?.role ==='admin'?SIDE_MENU_DATA:SIDE_MENU_USER_DATA)
-        }
-        return ()=>{};
-
-    },[user])
-  return <div className='w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 sticky top-[61px] z-20'>
-    <div className='flex flex-col items-center justify-center mb-7 pt-5'> 
-        <div className=' relative'> 
-
-      <img
-  src={user?.profileImageUrl || "http://localhost:3000/uploads/default-avatar.pn"}
-  alt="Profile image"
-  className="w-20 h-20 bg-slate-400 rounded-full"
-/>
-    </div>
-    {user?.role==='admin'&&(
-        <div className=' text-[10px] font-medium text-white bg-blue-600 px-3 py-0.5  rounded mt-1'>
-            Admin
-            </div>
-    )}
-    <h5 className='text-gray-950 font-medium leading-6  mt-3'>{user?.name||''}</h5>
-    <p className=' text-[12px] text-gray-500'>{user?.email||''}</p>
-  </div>
-  {sideMenuData.map((item,index)=>(
-    <button key={`menu_${index}`} className={`w-full flex items-center gap-4 text-[15px]${activeMenu==item.lable?'text-blue-600 bg-liner-to-r from-blue-50/40 to-blue-100/50 border-r-3':""}py-3 px-6 mb-3 cursor-pointer`} onClick={()=>handleClick(item.path)}><item.icon className='text-xl'/>{item.lable}</button>
-  ))}
-  </div>;
-};
-
-export default SideMenu */
-
-import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/UserContext';
-import { useNavigate } from 'react-router-dom';
-
-import { SIDE_MENU_DATA,SIDE_MENU_USER_DATA } from '../../utilit/data';
-
-const SideMenu = ({ activeMenu }) => {
+const SideMenu = ({ activeMenu }: SideMenuProps) => {
   const { user, clearUser } = useContext(UserContext);
-  const [sideMenuData, setSideMenuData] = useState([]);
+  const [sideMenuData, setSideMenuData] = useState<MenuItem[]>([]);
   const navigate = useNavigate();
 
+  // Logout
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("token");
     clearUser();
-    navigate('/login');
+    navigate("/login", { replace: true });
   };
 
-  const handleClick = (route) => {
-    if (route === 'logout') {
+  // Handle menu navigation
+  const handleClick = (route: string) => {
+    if (route === "logout") {
       handleLogout();
       return;
     }
@@ -81,63 +39,55 @@ const SideMenu = ({ activeMenu }) => {
     navigate(route);
   };
 
+  // Load menu depending on user role
   useEffect(() => {
     if (user) {
       setSideMenuData(
-        user.role === 'admin'
+        user.role === "admin"
           ? SIDE_MENU_DATA
           : SIDE_MENU_USER_DATA
       );
+    } else {
+      setSideMenuData([]);
     }
   }, [user]);
 
   return (
-    <div className="w-64 h-full bg-white border-r border-gray-200/50 sticky top-[61px] z-20 p-2">
-      <div className="flex flex-col items-start justify-start pr-1 mb-7 pt-5">
-        {/* <img
-          src={
-            user?.profileImageUrl ||
-            'http://localhost:3000/uploads/default-avatar.png'
-          }
-          alt="Profile"
-          className="w-20 h-20 bg-slate-400 rounded-full object-cover"
-        /> */}
-
-        {/* {user?.role === 'admin' && (
-          <div className="text-[10px] font-medium text-white bg-blue-600 px-3 py-0.5 rounded mt-1">
-            Admin
-          </div>
-        )}
-
-        <h5 className="text-gray-950 font-medium leading-6 mt-3">
-          {user?.name || ''}
-        </h5>
-
-        <p className="text-[12px] text-gray-500">
-          {user?.email || ''}
-        </p> */}
-        {user?.email || ''}
-        <h1 className=' text-yellow-300 text-2xl flex justify-start items-start '>Chella</h1>
+    <div className="fixed left-0 top-0 z-50 flex h-screen w-64 flex-col overflow-y-auto border-r border-white/10 bg-[#0b0b0b] p-3">
+      {/* Sidebar Header */}
+      <div className="mb-7 flex flex-col items-start px-3 pt-5">
+        <h1 className="text-3xl font-bold tracking-wide text-yellow-300">
+          Chella
+        </h1>
       </div>
 
-      {sideMenuData.map((item, index) => (
-        <button
-          key={`menu_${index}`}
-          onClick={() => handleClick(item.path)}
-          className={`w-full flex items-center gap-4 text-[15px] py-3 px-6 mb-3 cursor-pointer transition-colors ${
-            activeMenu === item.lable
-              ? 'text-black bg-yellow-300 border border-yellow-300 rounded-sm'
-              : 'text-gray-600 hover:bg-gray-100'
-          }`}
-        >
-          <item.icon className="text-xl" />
-          {item.lable}
-        </button>
-      ))}
+      {/* Dynamic Menu */}
+      <nav className="flex-1 space-y-2">
+        {sideMenuData.map((item, index) => (
+          <button
+            key={`menu_${index}`}
+            type="button"
+            onClick={() => handleClick(item.path)}
+            className={`flex w-full items-center gap-4 rounded-lg px-6 py-3 text-left text-sm font-medium transition-colors ${
+              activeMenu === item.lable
+                ? "border border-yellow-300 bg-yellow-300 text-black"
+                : "text-gray-300 hover:bg-gray-800 hover:text-yellow-300"
+            }`}
+          >
+            <item.icon size={20} />
+            <span>{item.lable}</span>
+          </button>
+        ))}
+      </nav>
+
+      {/* Footer */}
+      <div className="border-t border-white/10 px-3 py-4">
+        <p className="text-xs text-gray-500">
+          Chella APP
+        </p>
+      </div>
     </div>
   );
 };
 
 export default SideMenu;
-
-
