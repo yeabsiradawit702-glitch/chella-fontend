@@ -103,77 +103,103 @@ const Createtask = () => {
 
   // Create task
   const CreateTask = async () => {
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const toDoList: TodoItem[] = taskData.toChecklist.map((item) => ({
-        text: item,
-        completed: false,
-      }));
+  try {
+    const toDoList: TodoItem[] = taskData.toChecklist.map((item) => ({
+      text: item,
+      completed: false,
+    }));
 
-      await axiosInstance.post(API_PATHS.TASKS.CREATE_TASK, {
-        ...taskData,
-        toChecklist: toDoList,
-      });
+    const category =
+      taskData.category.toLowerCase() === "social"
+        ? "Instagram"
+        : taskData.category;
 
-      toast.success("Task created successfully");
-      clearData();
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          "Error creating task:",
-          error.response?.data?.message || error.message
-        );
-      } else {
-        console.error("Error creating task:", error);
-      }
-    } finally {
-      setLoading(false);
+    await axiosInstance.post(API_PATHS.TASKS.CREATE_TASK, {
+      title: taskData.title.trim(),
+      description: taskData.description.trim(),
+      priority: taskData.priority,
+      category,
+      reward: Number(taskData.reward),
+      targetUrl: taskData.targetUrl.trim(),
+      assignTo: taskData.assignTo, // [] means available to all members
+      toChecklist: toDoList,
+    });
+
+    toast.success("Task created successfully");
+    clearData();
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message || error.message;
+
+      toast.error(message);
+      console.error("Create task error:", error.response?.data);
+    } else {
+      toast.error("Something went wrong");
+      console.error(error);
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Update task
   const updateTask = async () => {
-    if (!taskId) return;
+  if (!taskId) return;
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const previousChecklist = currentTask?.toChecklist || [];
+  try {
+    const previousChecklist = currentTask?.toChecklist || [];
 
-      const todoList: TodoItem[] = taskData.toChecklist.map((item) => {
-        const matchedTask = previousChecklist.find(
-          (task) => task.text === item
-        );
-
-        return {
-          text: item,
-          completed: matchedTask?.completed ?? false,
-        };
-      });
-
-      await axiosInstance.put(
-        API_PATHS.TASKS.UPDATE_TASK(taskId),
-        {
-          ...taskData,
-          toChecklist: todoList,
-        }
+    const todoList: TodoItem[] = taskData.toChecklist.map((item) => {
+      const matchedTask = previousChecklist.find(
+        (task) => task.text === item
       );
 
-      toast.success("Task updated successfully");
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          "Error updating task:",
-          error.response?.data?.message || error.message
-        );
-      } else {
-        console.error("Error updating task:", error);
+      return {
+        text: item,
+        completed: matchedTask?.completed ?? false,
+      };
+    });
+
+    const category =
+      taskData.category.toLowerCase() === "social"
+        ? "Instagram"
+        : taskData.category;
+
+    await axiosInstance.put(
+      API_PATHS.TASKS.UPDATE_TASK(taskId),
+      {
+        title: taskData.title.trim(),
+        description: taskData.description.trim(),
+        priority: taskData.priority,
+        category,
+        reward: Number(taskData.reward),
+        targetUrl: taskData.targetUrl.trim(),
+        assignTo: taskData.assignTo,
+        toChecklist: todoList,
       }
-    } finally {
-      setLoading(false);
+    );
+
+    toast.success("Task updated successfully");
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message || error.message;
+
+      toast.error(message);
+      console.error("Update task error:", error.response?.data);
+    } else {
+      toast.error("Something went wrong");
+      console.error(error);
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Validate and submit
   const handleSubmit = async () => {
