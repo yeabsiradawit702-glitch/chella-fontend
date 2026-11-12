@@ -36,11 +36,14 @@ const NavBar = ({ activeMenu }: NavBarProps) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 min-w-0 left-0 bg-[#0b0b0b] w-full text-white">
-      <div className="h-14 flex items-center justify-between sm:px-7">
+    <header className="sticky top-0 z-50 w-full min-w-0 bg-[#0b0b0b] text-white">
+
+      <div className="flex h-14 w-full min-w-0 items-center justify-between gap-2 px-3 sm:px-5 md:px-7">
+
+        {/* Mobile Menu */}
         <button
           type="button"
-          className="lg:hidden text-white"
+          className="flex shrink-0 items-center justify-center text-white lg:hidden"
           onClick={() => setOpenSideMenu(!openSideMenu)}
           aria-label="Toggle menu"
         >
@@ -52,25 +55,29 @@ const NavBar = ({ activeMenu }: NavBarProps) => {
         </button>
 
         {/* Wallet Balances */}
-        <div className="hidden sm:flex items-center gap-3 text-[13px]">
+        <div className="hidden min-w-0 items-center gap-2 text-xs md:flex lg:gap-3 lg:text-[13px]">
           <span className="text-gray-400">ETB:</span>
-          <span className="text-yellow-400 font-semibold">
+          <span className="font-semibold text-yellow-400">
             {Number(user?.etbBalance || 0).toFixed(2)}
           </span>
 
           <span className="text-gray-400">USD:</span>
-          <span className="text-green-400 font-semibold">
+          <span className="font-semibold text-green-400">
             ${Number(user?.usdBalance || 0).toFixed(2)}
           </span>
         </div>
 
-        {/* Right side */}
-        <div className="flex items-center gap-3 sm:gap-4">
-          <NotificationBell />
+        {/* Right Side */}
+        <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3 md:gap-4">
+
+          {/* Notification */}
+          <div className="relative z-[60] shrink-0">
+            <NotificationBell />
+          </div>
 
           {/* Currency Selector */}
-          <div className="hidden sm:flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-2 py-1.5">
-            <LuWallet className="text-yellow-400 text-lg" />
+          <div className="hidden items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-2 py-1.5 sm:flex">
+            <LuWallet className="text-lg text-yellow-400" />
 
             <select
               value={selectedCurrency}
@@ -93,24 +100,24 @@ const NavBar = ({ activeMenu }: NavBarProps) => {
           {/* User Profile */}
           <Link
             to="/user/profile"
-            className="flex items-center gap-2 sm:gap-3 rounded-full bg-white/[0.04] hover:bg-white/[0.08] py-1 px-2 sm:px-3"
+            className="flex min-w-0 items-center gap-2 rounded-full bg-white/[0.04] px-1.5 py-1 transition hover:bg-white/[0.08] sm:px-3 sm:gap-3"
           >
-            <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center overflow-hidden shrink-0">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-yellow-400">
               {user?.profileImageUrl ? (
                 <img
                   src={user.profileImageUrl}
                   alt="Profile"
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                 />
               ) : (
-                <span className="text-black font-bold text-2xl">
+                <span className="text-xl font-bold text-black">
                   {(user?.name || "C").charAt(0).toUpperCase()}
                 </span>
               )}
             </div>
 
-            <div className="flex flex-col items-start">
-              <span className="text-[16px] font-semibold text-white">
+            <div className="hidden min-w-0 flex-col items-start sm:flex">
+              <span className="max-w-24 truncate text-sm font-semibold text-white md:max-w-32 md:text-base">
                 {user?.name || "ChellaUser"}
               </span>
 
@@ -126,7 +133,7 @@ const NavBar = ({ activeMenu }: NavBarProps) => {
 
       {/* Mobile Sidebar */}
       {openSideMenu && (
-        <div className="fixed inset-y-14 left-0 z-50 w-64 bg-[#111111] border-r border-white/10 shadow-xl lg:hidden">
+        <div className="fixed inset-y-14 left-0 z-[70] w-64 border-r border-white/10 bg-[#111111] shadow-xl lg:hidden">
           <SideMenu activeMenu={activeMenu} />
         </div>
       )}
