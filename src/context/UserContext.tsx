@@ -81,7 +81,7 @@ console.log("RESTORED USER:", userData);
 
 setUser(userData);
       } catch (error: unknown) {
-        console.error("User not authenticated:", error);
+        console.log("User not authenticated:", error);
         setUser(null);
       } finally {
         setLoading(false);
