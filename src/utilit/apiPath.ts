@@ -1,5 +1,5 @@
 
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://backend-ch-onwc.onrender.com";
 
 // API ENDPOINTS
 export const API_PATHS = {

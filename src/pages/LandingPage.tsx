@@ -8,11 +8,12 @@ export default function LandingPage() {
 
       <nav className="flex justify-between items-center p-6">
         <div className="flex gap-1 justify-between items-start">
-          <h1 className="text-yellow-300 font-bold text-xl">chella</h1>
-          <p className="text-gray-400">Reward app</p>
+          <h1 className="text-yellow-300 font-bold text-xl sm:text-[16px]">chella</h1>
+          <p className="text-gray-400 max-sm:hidden">Reward app</p>
         </div>
 
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center max-sm:hidden
+        ">
           <Link to="/login">
             <button className="border border-amber-300 text-yellow-300 w-20 rounded-sm py-1 hover:bg-amber-300 hover:text-black transition">
               login
@@ -30,7 +31,7 @@ export default function LandingPage() {
       <main className="flex justify-center items-center flex-col gap-10 px-4">
 
         <div className="grid gap-3 text-center">
-          <h1 className="text-white text-4xl md:text-6xl font-bold">
+          <h1 className="text-white text-4xl md:text-6xl  font-bold">
             Turn Every Action Into
           </h1>
 
@@ -121,28 +122,28 @@ export default function LandingPage() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 justify-center items-center gap-4 w-full max-w-5xl">
 
-          <div className="flex justify-center items-center bg-[#171717] border border-gray-800 rounded-sm p-8">
+          <div className="flex justify-center items-center bg-[#171717] border border-gray-800 rounded-sm p-8 w-55">
             <div className="flex flex-col justify-center items-center">
               <h1 className="text-yellow-300 font-bold text-2xl">50K+</h1>
               <p className="text-gray-400">Active users</p>
             </div>
           </div>
 
-          <div className="flex justify-center items-center bg-[#171717] border border-gray-800 rounded-sm p-8">
+          <div className="flex justify-center items-center bg-[#171717] border border-gray-800 rounded-sm p-8 w-55">
             <div className="flex flex-col justify-center items-center">
               <h1 className="text-yellow-300 font-bold text-2xl">500K+</h1>
               <p className="text-gray-400">EtB distrbuited</p>
             </div>
           </div>
 
-          <div className="flex justify-center items-center bg-[#171717] border border-gray-800 rounded-sm p-8">
+          <div className="flex justify-center items-center bg-[#171717] border border-gray-800 rounded-sm p-8 w-55">
             <div className="flex flex-col justify-center items-center">
               <h1 className="text-white font-bold text-2xl">3</h1>
               <p className="text-gray-400">currency supported</p>
             </div>
           </div>
 
-          <div className="flex justify-center items-center bg-[#171717] border border-gray-800 rounded-sm p-8">
+          <div className="flex justify-center items-center bg-[#171717] border border-gray-800 rounded-sm p-8 w-55">
             <div className="flex flex-col justify-center items-center">
               <h1 className="text-yellow-300 font-bold text-2xl">99%</h1>
               <p className="text-gray-400">User satisification</p>
@@ -151,7 +152,7 @@ export default function LandingPage() {
 
         </div>
 
-        <div className="flex flex-col gap-2 justify-center items-center text-center py-6">
+        <div className="flex flex-col gap-2 justify-center items-center text-center py-6" >
           <h1 className="text-white text-2xl font-bold">
             Ready to Start Earning?
           </h1>
@@ -160,7 +161,7 @@ export default function LandingPage() {
             Join thousands of users already rewarded by Chella.
           </p>
 
-          <Link to="/NewAccountpage">
+          <Link to="/signup">
             <button className="bg-amber-300 text-black rounded-sm p-2 hover:bg-yellow-400 transition">
               Create Your account now
             </button>

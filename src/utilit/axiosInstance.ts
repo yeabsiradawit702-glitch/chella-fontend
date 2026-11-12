@@ -1,9 +1,11 @@
+
 import axios from "axios";
 import { BASE_URL } from "./apiPath";
+
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     Accept: "application/json",
   },
@@ -28,11 +30,17 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      window.location.href = "/login"
-    } else if (error.response?.status === 500) {
-      console.error("Server error. Please try again later.");
-    } else if (error.code === "ECONNABORTED") {
-      console.error("Request timed out. Please try again.");
+      console.error("Authentication failed:", error.response.data);
+      window.location.href = "/login";
+    } else if (error.response?.status === 404) {
+      console.error("API endpoint not found:", error.config?.url);
+    } else if (error.response?.status >= 500) {
+      console.error("Backend server error:", error.response.data);
+    } else if (
+      error.code === "ECONNABORTED" ||
+      error.code === "ETIMEDOUT"
+    ) {
+      console.error("Backend request timed out.");
     }
 
     return Promise.reject(error);
@@ -40,4 +48,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
