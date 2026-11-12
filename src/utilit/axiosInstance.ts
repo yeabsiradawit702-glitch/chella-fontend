@@ -11,20 +11,6 @@ const axiosInstance = axios.create({
   },
 });
 
-// Request interceptor
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const accessToken = localStorage.getItem("token");
-
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => response,
