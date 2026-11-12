@@ -189,10 +189,7 @@ const Createtask = () => {
       return;
     }
 
-    if (taskData.assignTo.length === 0) {
-      setError("Task not assigned to any member");
-      return;
-    }
+   
 
     if (taskData.toChecklist.length === 0) {
       setError("Add at least one todo task");
