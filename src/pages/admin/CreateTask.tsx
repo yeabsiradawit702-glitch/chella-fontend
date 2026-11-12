@@ -28,7 +28,6 @@ interface TaskFormData {
   category: string;
   reward: string;
   targetUrl: string;
-  dueDate: string | null;
   assignTo: string[];
   toChecklist: string[];
   attachements: unknown[];
@@ -45,7 +44,7 @@ interface TaskInfo {
   category: string;
   reward: string | number;
   targetUrl?: string;
-  dueDate?: string | null;
+ 
   assignedTo?: TaskUser[];
   toChecklist?: TodoItem[];
   attachemnts?: unknown[];
@@ -66,7 +65,6 @@ const Createtask = () => {
     category: "social",
     reward: "",
     targetUrl: "",
-    dueDate: null,
     assignTo: [],
     toChecklist: [],
     attachements: [],
@@ -97,7 +95,6 @@ const Createtask = () => {
       category: "social",
       reward: "",
       targetUrl: "",
-      dueDate: null,
       assignTo: [],
       toChecklist: [],
       attachements: [],
@@ -116,9 +113,6 @@ const Createtask = () => {
 
       await axiosInstance.post(API_PATHS.TASKS.CREATE_TASK, {
         ...taskData,
-        dueDate: taskData.dueDate
-          ? new Date(taskData.dueDate).toISOString()
-          : null,
         toChecklist: toDoList,
       });
 
@@ -162,7 +156,6 @@ const Createtask = () => {
         API_PATHS.TASKS.UPDATE_TASK(taskId),
         {
           ...taskData,
-          dueDate: taskData.dueDate || undefined,
           toChecklist: todoList,
         }
       );
@@ -241,7 +234,6 @@ const Createtask = () => {
         category: taskInfo.category || "social",
         reward: String(taskInfo.reward ?? ""),
         targetUrl: taskInfo.targetUrl || "",
-        dueDate: taskInfo.dueDate || null,
         assignTo: taskInfo.assignedTo?.map((item) => item._id) || [],
         toChecklist:
           taskInfo.toChecklist?.map((item) => item.text) || [],
